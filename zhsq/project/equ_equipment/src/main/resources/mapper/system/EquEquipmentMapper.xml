@@ -1,0 +1,109 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.ruoyi.system.mapper.EquEquipmentMapper">
+    
+    <resultMap type="EquEquipment" id="EquEquipmentResult">
+        <result property="equId"    column="equ_id"    />
+        <result property="equCid"    column="equ_cid"    />
+        <result property="equMianid"    column="equ_mianid"    />
+        <result property="equName"    column="equ_name"    />
+        <result property="equState"    column="equ_state"    />
+        <result property="equTime"    column="equ_time"    />
+        <result property="equSpecification"    column="equ_specification"    />
+        <result property="equPower"    column="equ_power"    />
+        <result property="equLongitude"    column="equ_longitude"    />
+        <result property="equLatitude"    column="equ_latitude"    />
+        <result property="equScope"    column="equ_scope"    />
+        <result property="equVoltage"    column="equ_voltage"    />
+    </resultMap>
+
+    <sql id="selectEquEquipmentVo">
+        select equ_id, equ_cid, equ_mianid, equ_name, equ_state, equ_time, equ_specification, equ_power, equ_longitude, equ_latitude, equ_scope, equ_voltage from equ_equipment
+    </sql>
+
+    <select id="selectEquEquipmentList" parameterType="EquEquipment" resultMap="EquEquipmentResult">
+        <include refid="selectEquEquipmentVo"/>
+        <where>  
+            <if test="equCid != null "> and equ_cid = #{equCid}</if>
+            <if test="equMianid != null "> and equ_mianid = #{equMianid}</if>
+            <if test="equName != null  and equName != ''"> and equ_name like concat('%', #{equName}, '%')</if>
+            <if test="equState != null "> and equ_state = #{equState}</if>
+            <if test="equTime != null "> and equ_time = #{equTime}</if>
+            <if test="equSpecification != null  and equSpecification != ''"> and equ_specification = #{equSpecification}</if>
+            <if test="equPower != null "> and equ_power = #{equPower}</if>
+            <if test="equLongitude != null "> and equ_longitude = #{equLongitude}</if>
+            <if test="equLatitude != null "> and equ_latitude = #{equLatitude}</if>
+            <if test="equScope != null  and equScope != ''"> and equ_scope = #{equScope}</if>
+            <if test="equVoltage != null "> and equ_voltage = #{equVoltage}</if>
+        </where>
+    </select>
+    
+    <select id="selectEquEquipmentById" parameterType="Long" resultMap="EquEquipmentResult">
+        <include refid="selectEquEquipmentVo"/>
+        where equ_id = #{equId}
+    </select>
+        
+    <insert id="insertEquEquipment" parameterType="EquEquipment" useGeneratedKeys="true" keyProperty="equId">
+        insert into equ_equipment
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="equCid != null">equ_cid,</if>
+            <if test="equMianid != null">equ_mianid,</if>
+            <if test="equName != null">equ_name,</if>
+            <if test="equState != null">equ_state,</if>
+            <if test="equTime != null">equ_time,</if>
+            <if test="equSpecification != null">equ_specification,</if>
+            <if test="equPower != null">equ_power,</if>
+            <if test="equLongitude != null">equ_longitude,</if>
+            <if test="equLatitude != null">equ_latitude,</if>
+            <if test="equScope != null">equ_scope,</if>
+            <if test="equVoltage != null">equ_voltage,</if>
+         </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="equCid != null">#{equCid},</if>
+            <if test="equMianid != null">#{equMianid},</if>
+            <if test="equName != null">#{equName},</if>
+            <if test="equState != null">#{equState},</if>
+            <if test="equTime != null">#{equTime},</if>
+            <if test="equSpecification != null">#{equSpecification},</if>
+            <if test="equPower != null">#{equPower},</if>
+            <if test="equLongitude != null">#{equLongitude},</if>
+            <if test="equLatitude != null">#{equLatitude},</if>
+            <if test="equScope != null">#{equScope},</if>
+            <if test="equVoltage != null">#{equVoltage},</if>
+         </trim>
+    </insert>
+
+    <update id="updateEquEquipment" parameterType="EquEquipment">
+        update equ_equipment
+        <trim prefix="SET" suffixOverrides=",">
+            <if test="equCid != null">equ_cid = #{equCid},</if>
+            <if test="equMianid != null">equ_mianid = #{equMianid},</if>
+            <if test="equName != null">equ_name = #{equName},</if>
+            <if test="equState != null">equ_state = #{equState},</if>
+            <if test="equTime != null">equ_time = #{equTime},</if>
+            <if test="equSpecification != null">equ_specification = #{equSpecification},</if>
+            <if test="equPower != null">equ_power = #{equPower},</if>
+            <if test="equLongitude != null">equ_longitude = #{equLongitude},</if>
+            <if test="equLatitude != null">equ_latitude = #{equLatitude},</if>
+            <if test="equScope != null">equ_scope = #{equScope},</if>
+            <if test="equVoltage != null">equ_voltage = #{equVoltage},</if>
+        </trim>
+        where equ_id = #{equId}
+    </update>
+
+    <delete id="deleteEquEquipmentById" parameterType="Long">
+        delete from equ_equipment where equ_id = #{equId}
+    </delete>
+
+    <delete id="deleteEquEquipmentByIds" parameterType="String">
+        delete from equ_equipment where equ_id in 
+        <foreach item="equId" collection="array" open="(" separator="," close=")">
+            #{equId}
+        </foreach>
+    </delete>
+
+
+
+</mapper>

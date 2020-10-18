@@ -1,0 +1,77 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.ruoyi.system.mapper.EquSirenMapper">
+    
+    <resultMap type="EquSiren" id="EquSirenResult">
+        <result property="sirenId"    column="siren_id"    />
+        <result property="equMianid"    column="equ_mianid"    />
+        <result property="equCid"    column="equ_cid"    />
+        <result property="sirenTime"    column="siren_time"    />
+        <result property="sirenType"    column="siren_type"    />
+        <result property="sirenRank"    column="siren_rank"    />
+    </resultMap>
+
+    <sql id="selectEquSirenVo">
+        select siren_id, equ_mianid, equ_cid, siren_time, siren_type, siren_rank from equ_siren
+    </sql>
+
+    <select id="selectEquSirenList" parameterType="EquSiren" resultMap="EquSirenResult">
+        <include refid="selectEquSirenVo"/>
+        <where>  
+            <if test="equMianid != null "> and equ_mianid = #{equMianid}</if>
+            <if test="equCid != null  and equCid != ''"> and equ_cid = #{equCid}</if>
+            <if test="sirenTime != null  and sirenTime != ''"> and siren_time = #{sirenTime}</if>
+            <if test="sirenType != null "> and siren_type = #{sirenType}</if>
+            <if test="sirenRank != null "> and siren_rank = #{sirenRank}</if>
+        </where>
+    </select>
+    
+    <select id="selectEquSirenById" parameterType="Long" resultMap="EquSirenResult">
+        <include refid="selectEquSirenVo"/>
+        where siren_id = #{sirenId}
+    </select>
+        
+    <insert id="insertEquSiren" parameterType="EquSiren" useGeneratedKeys="true" keyProperty="sirenId">
+        insert into equ_siren
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="equMianid != null">equ_mianid,</if>
+            <if test="equCid != null">equ_cid,</if>
+            <if test="sirenTime != null">siren_time,</if>
+            <if test="sirenType != null">siren_type,</if>
+            <if test="sirenRank != null">siren_rank,</if>
+         </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="equMianid != null">#{equMianid},</if>
+            <if test="equCid != null">#{equCid},</if>
+            <if test="sirenTime != null">#{sirenTime},</if>
+            <if test="sirenType != null">#{sirenType},</if>
+            <if test="sirenRank != null">#{sirenRank},</if>
+         </trim>
+    </insert>
+
+    <update id="updateEquSiren" parameterType="EquSiren">
+        update equ_siren
+        <trim prefix="SET" suffixOverrides=",">
+            <if test="equMianid != null">equ_mianid = #{equMianid},</if>
+            <if test="equCid != null">equ_cid = #{equCid},</if>
+            <if test="sirenTime != null">siren_time = #{sirenTime},</if>
+            <if test="sirenType != null">siren_type = #{sirenType},</if>
+            <if test="sirenRank != null">siren_rank = #{sirenRank},</if>
+        </trim>
+        where siren_id = #{sirenId}
+    </update>
+
+    <delete id="deleteEquSirenById" parameterType="Long">
+        delete from equ_siren where siren_id = #{sirenId}
+    </delete>
+
+    <delete id="deleteEquSirenByIds" parameterType="String">
+        delete from equ_siren where siren_id in 
+        <foreach item="sirenId" collection="array" open="(" separator="," close=")">
+            #{sirenId}
+        </foreach>
+    </delete>
+
+</mapper>

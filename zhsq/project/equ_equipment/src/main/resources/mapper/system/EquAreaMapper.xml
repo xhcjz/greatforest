@@ -1,0 +1,57 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.ruoyi.system.mapper.EquAreaMapper">
+    
+    <resultMap type="EquArea" id="EquAreaResult">
+        <result property="areaId"    column="area_id"    />
+        <result property="areaRegoin"    column="area_regoin"    />
+    </resultMap>
+
+    <sql id="selectEquAreaVo">
+        select area_id, area_regoin from equ_area
+    </sql>
+
+    <select id="selectEquAreaList" parameterType="EquArea" resultMap="EquAreaResult">
+        <include refid="selectEquAreaVo"/>
+        <where>  
+            <if test="areaRegoin != null  and areaRegoin != ''"> and area_regoin = #{areaRegoin}</if>
+        </where>
+    </select>
+    
+    <select id="selectEquAreaById" parameterType="Long" resultMap="EquAreaResult">
+        <include refid="selectEquAreaVo"/>
+        where area_id = #{areaId}
+    </select>
+        
+    <insert id="insertEquArea" parameterType="EquArea" useGeneratedKeys="true" keyProperty="areaId">
+        insert into equ_area
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="areaRegoin != null">area_regoin,</if>
+         </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="areaRegoin != null">#{areaRegoin},</if>
+         </trim>
+    </insert>
+
+    <update id="updateEquArea" parameterType="EquArea">
+        update equ_area
+        <trim prefix="SET" suffixOverrides=",">
+            <if test="areaRegoin != null">area_regoin = #{areaRegoin},</if>
+        </trim>
+        where area_id = #{areaId}
+    </update>
+
+    <delete id="deleteEquAreaById" parameterType="Long">
+        delete from equ_area where area_id = #{areaId}
+    </delete>
+
+    <delete id="deleteEquAreaByIds" parameterType="String">
+        delete from equ_area where area_id in 
+        <foreach item="areaId" collection="array" open="(" separator="," close=")">
+            #{areaId}
+        </foreach>
+    </delete>
+
+</mapper>

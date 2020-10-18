@@ -1,0 +1,67 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.ruoyi.system.mapper.PushRecordMapper">
+    
+    <resultMap type="PushRecord" id="PushRecordResult">
+        <result property="recordId"    column="record_id"    />
+        <result property="recordType"    column="record_type"    />
+        <result property="recordFalse"    column="record_false"    />
+        <result property="createTime"    column="createTime"    />
+    </resultMap>
+
+    <sql id="selectPushRecordVo">
+        select record_id, record_type, record_false, createTime from push_record
+    </sql>
+
+    <select id="selectPushRecordList" parameterType="PushRecord" resultMap="PushRecordResult">
+        <include refid="selectPushRecordVo"/>
+        <where>  
+            <if test="recordType != null "> and record_type = #{recordType}</if>
+            <if test="recordFalse != null "> and record_false = #{recordFalse}</if>
+            <if test="createTime != null "> and createTime = #{createTime}</if>
+        </where>
+    </select>
+    
+    <select id="selectPushRecordById" parameterType="Long" resultMap="PushRecordResult">
+        <include refid="selectPushRecordVo"/>
+        where record_id = #{recordId}
+    </select>
+        
+    <insert id="insertPushRecord" parameterType="PushRecord" useGeneratedKeys="true" keyProperty="recordId">
+        insert into push_record
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="recordType != null">record_type,</if>
+            <if test="recordFalse != null">record_false,</if>
+            <if test="createTime != null">createTime,</if>
+         </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="recordType != null">#{recordType},</if>
+            <if test="recordFalse != null">#{recordFalse},</if>
+            <if test="createTime != null">#{createTime},</if>
+         </trim>
+    </insert>
+
+    <update id="updatePushRecord" parameterType="PushRecord">
+        update push_record
+        <trim prefix="SET" suffixOverrides=",">
+            <if test="recordType != null">record_type = #{recordType},</if>
+            <if test="recordFalse != null">record_false = #{recordFalse},</if>
+            <if test="createTime != null">createTime = #{createTime},</if>
+        </trim>
+        where record_id = #{recordId}
+    </update>
+
+    <delete id="deletePushRecordById" parameterType="Long">
+        delete from push_record where record_id = #{recordId}
+    </delete>
+
+    <delete id="deletePushRecordByIds" parameterType="String">
+        delete from push_record where record_id in 
+        <foreach item="recordId" collection="array" open="(" separator="," close=")">
+            #{recordId}
+        </foreach>
+    </delete>
+
+</mapper>

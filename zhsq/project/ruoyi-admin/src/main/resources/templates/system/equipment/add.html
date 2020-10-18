@@ -1,0 +1,110 @@
+<!DOCTYPE html>
+<html lang="zh" xmlns:th="http://www.thymeleaf.org" >
+<head>
+    <th:block th:include="include :: header('新增传感器列')" />
+    <th:block th:include="include :: datetimepicker-css" />
+</head>
+<body class="white-bg">
+    <div class="wrapper wrapper-content animated fadeInRight ibox-content">
+        <form class="form-horizontal m" id="form-equipment-add">
+            <div class="form-group">    
+                <label class="col-sm-3 control-label">传感器编号：</label>
+                <div class="col-sm-8">
+                    <input name="equCid" class="form-control" type="text">
+                </div>
+            </div>
+<!--            <div class="form-group">    -->
+<!--                <label class="col-sm-3 control-label">主机id：</label>-->
+<!--                <div class="col-sm-8">-->
+<!--                    <input name="equMianid" class="form-control" type="text">-->
+<!--                </div>-->
+<!--            </div>-->
+            <div class="form-group">    
+                <label class="col-sm-3 control-label">传感器名称：</label>
+                <div class="col-sm-8">
+                    <input name="equName" class="form-control" type="text">
+                </div>
+            </div>
+            <div class="form-group">    
+                <label class="col-sm-3 control-label">状态：</label>
+<!--                <div class="col-sm-8">-->
+<!--                    <input name="equState" class="form-control" type="text">-->
+<!--                </div>-->
+                <div class="col-sm-8">
+                    <select name="equState" th:with="type=${@dict.getType('sys_equ_type')}" class="form-control">
+                        <option value="">所有</option>
+                        <option th:each="dict : ${type}" th:text="${dict.dictLabel}" th:value="${dict.dictValue}">
+                        </option>
+                    </select>
+                </div>
+            </div>
+
+            <div class="form-group">    
+                <label class="col-sm-3 control-label">运行时间：</label>
+                <div class="col-sm-8">
+                    <div class="input-group date">
+                        <input name="equTime" class="form-control" placeholder="yyyy-MM-dd" type="text">
+                        <span class="input-group-addon"><i class="fa fa-calendar"></i></span>
+                    </div>
+                </div>
+            </div>
+<!--            <div class="form-group">-->
+<!--                <label class="col-sm-3 control-label">规格参数：</label>-->
+<!--                <div class="col-sm-8">-->
+<!--                    <textarea name="equSpecification" class="form-control"></textarea>-->
+<!--                </div>-->
+<!--            </div>-->
+            <div class="form-group">    
+                <label class="col-sm-3 control-label">耗电量：</label>
+                <div class="col-sm-8">
+                    <input name="equPower" class="form-control" type="text">
+                </div>
+            </div>
+            <div class="form-group">    
+                <label class="col-sm-3 control-label">经度：</label>
+                <div class="col-sm-8">
+                    <input name="equLongitude" class="form-control" type="text">
+                </div>
+            </div>
+            <div class="form-group">    
+                <label class="col-sm-3 control-label">纬度：</label>
+                <div class="col-sm-8">
+                    <input name="equLatitude" class="form-control" type="text">
+                </div>
+            </div>
+            <div class="form-group">    
+                <label class="col-sm-3 control-label">辐射范围：</label>
+                <div class="col-sm-8">
+                    <input name="equScope" class="form-control" type="text">
+                </div>
+            </div>
+            <div class="form-group">    
+                <label class="col-sm-3 control-label">电压：</label>
+                <div class="col-sm-8">
+                    <input name="equVoltage" class="form-control" type="text">
+                </div>
+            </div>
+        </form>
+    </div>
+    <th:block th:include="include :: footer" />
+    <th:block th:include="include :: datetimepicker-js" />
+    <script th:inline="javascript">
+        var prefix = ctx + "system/equipment"
+        $("#form-equipment-add").validate({
+            focusCleanup: true
+        });
+
+        function submitHandler() {
+            if ($.validate.form()) {
+                $.operate.save(prefix + "/add", $('#form-equipment-add').serialize());
+            }
+        }
+
+        $("input[name='equTime']").datetimepicker({
+            format: "yyyy-mm-dd",
+            minView: "month",
+            autoclose: true
+        });
+    </script>
+</body>
+</html>

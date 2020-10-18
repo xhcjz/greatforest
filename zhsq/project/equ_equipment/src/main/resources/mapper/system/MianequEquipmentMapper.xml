@@ -1,0 +1,97 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.ruoyi.system.mapper.MianequEquipmentMapper">
+    
+    <resultMap type="MianequEquipment" id="MianequEquipmentResult">
+        <result property="mianequId"    column="mianequ_id"    />
+        <result property="areaId"    column="area_id"    />
+        <result property="mianequMainid"    column="mianequ_mainid"    />
+        <result property="mianequName"    column="mianequ_name"    />
+        <result property="mianequState"    column="mianequ_state"    />
+        <result property="mianequTime"    column="mianequ_time"    />
+        <result property="mianequPower"    column="mianequ_power"    />
+        <result property="mianequVoltage"    column="mianequ_voltage"    />
+        <result property="mianequLongitude"    column="mianequ_longitude"    />
+        <result property="mianequLatitude"    column="mianequ_latitude"    />
+    </resultMap>
+
+    <sql id="selectMianequEquipmentVo">
+        select mianequ_id, area_id, mianequ_mainid, mianequ_name, mianequ_state, mianequ_time, mianequ_power, mianequ_voltage, mianequ_longitude, mianequ_latitude from mianequ_equipment
+    </sql>
+
+    <select id="selectMianequEquipmentList" parameterType="MianequEquipment" resultMap="MianequEquipmentResult">
+        <include refid="selectMianequEquipmentVo"/>
+        <where>  
+            <if test="areaId != null "> and area_id = #{areaId}</if>
+            <if test="mianequMainid != null "> and mianequ_mainid = #{mianequMainid}</if>
+            <if test="mianequName != null  and mianequName != ''"> and mianequ_name like concat('%', #{mianequName}, '%')</if>
+            <if test="mianequState != null "> and mianequ_state = #{mianequState}</if>
+            <if test="mianequTime != null "> and mianequ_time = #{mianequTime}</if>
+            <if test="mianequPower != null "> and mianequ_power = #{mianequPower}</if>
+            <if test="mianequVoltage != null "> and mianequ_voltage = #{mianequVoltage}</if>
+            <if test="mianequLongitude != null "> and mianequ_longitude = #{mianequLongitude}</if>
+            <if test="mianequLatitude != null "> and mianequ_latitude = #{mianequLatitude}</if>
+        </where>
+    </select>
+    
+    <select id="selectMianequEquipmentById" parameterType="Long" resultMap="MianequEquipmentResult">
+        <include refid="selectMianequEquipmentVo"/>
+        where mianequ_id = #{mianequId}
+    </select>
+        
+    <insert id="insertMianequEquipment" parameterType="MianequEquipment" useGeneratedKeys="true" keyProperty="mianequId">
+        insert into mianequ_equipment
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="areaId != null">area_id,</if>
+            <if test="mianequMainid != null">mianequ_mainid,</if>
+            <if test="mianequName != null">mianequ_name,</if>
+            <if test="mianequState != null">mianequ_state,</if>
+            <if test="mianequTime != null">mianequ_time,</if>
+            <if test="mianequPower != null">mianequ_power,</if>
+            <if test="mianequVoltage != null">mianequ_voltage,</if>
+            <if test="mianequLongitude != null">mianequ_longitude,</if>
+            <if test="mianequLatitude != null">mianequ_latitude,</if>
+         </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="areaId != null">#{areaId},</if>
+            <if test="mianequMainid != null">#{mianequMainid},</if>
+            <if test="mianequName != null">#{mianequName},</if>
+            <if test="mianequState != null">#{mianequState},</if>
+            <if test="mianequTime != null">#{mianequTime},</if>
+            <if test="mianequPower != null">#{mianequPower},</if>
+            <if test="mianequVoltage != null">#{mianequVoltage},</if>
+            <if test="mianequLongitude != null">#{mianequLongitude},</if>
+            <if test="mianequLatitude != null">#{mianequLatitude},</if>
+         </trim>
+    </insert>
+
+    <update id="updateMianequEquipment" parameterType="MianequEquipment">
+        update mianequ_equipment
+        <trim prefix="SET" suffixOverrides=",">
+            <if test="areaId != null">area_id = #{areaId},</if>
+            <if test="mianequMainid != null">mianequ_mainid = #{mianequMainid},</if>
+            <if test="mianequName != null">mianequ_name = #{mianequName},</if>
+            <if test="mianequState != null">mianequ_state = #{mianequState},</if>
+            <if test="mianequTime != null">mianequ_time = #{mianequTime},</if>
+            <if test="mianequPower != null">mianequ_power = #{mianequPower},</if>
+            <if test="mianequVoltage != null">mianequ_voltage = #{mianequVoltage},</if>
+            <if test="mianequLongitude != null">mianequ_longitude = #{mianequLongitude},</if>
+            <if test="mianequLatitude != null">mianequ_latitude = #{mianequLatitude},</if>
+        </trim>
+        where mianequ_id = #{mianequId}
+    </update>
+
+    <delete id="deleteMianequEquipmentById" parameterType="Long">
+        delete from mianequ_equipment where mianequ_id = #{mianequId}
+    </delete>
+
+    <delete id="deleteMianequEquipmentByIds" parameterType="String">
+        delete from mianequ_equipment where mianequ_id in 
+        <foreach item="mianequId" collection="array" open="(" separator="," close=")">
+            #{mianequId}
+        </foreach>
+    </delete>
+
+</mapper>
